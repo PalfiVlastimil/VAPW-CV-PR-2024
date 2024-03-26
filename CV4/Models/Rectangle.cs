@@ -52,9 +52,19 @@ namespace CV4.Models
 
         internal override void Draw(Graphics graphics)
         {
-            DrawPoint(graphics);
+            base.Draw(graphics);
             var pen = new Pen(PenColor, PenWidth);
             graphics.DrawRectangle(pen, OX - Width / 2, OY - Height / 2, Width, Height);
+        }
+
+        protected internal override void DrawHover(Graphics graphics)
+        {
+            var pen = new Pen(Color.Red, 1);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+            graphics.DrawRectangle(pen, OX - Width  / 2 - 2, OY - Height  / 2 - 2, Width+4, Height+4);
+
+
+            
         }
     }
 }

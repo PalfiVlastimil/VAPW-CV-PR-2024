@@ -74,5 +74,10 @@ namespace CV4.Models
             var pen = new Pen(PenColor, PenWidth);
             graphics.DrawPolygon(pen, points.ToArray());
         }
+
+        protected internal override void DrawHover(Graphics graphics)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

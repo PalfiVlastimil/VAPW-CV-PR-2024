@@ -48,5 +48,10 @@ namespace CV4.Models
             DrawPoint(graphics);
             graphics.DrawEllipse(new Pen(PenColor, PenWidth), OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
         }
+
+        protected internal override void DrawHover(Graphics graphics)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -57,13 +57,13 @@ namespace CV4
                 if (comboBox1.SelectedItem.ToString() == nameof(Circle))
                 {
                     geometries.Add(new Circle(points[0].X, points[0].Y,
-                        (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)),(int)numericUpDown1.Value, panel1.BackColor));
+                        (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)), (int)numericUpDown1.Value, panel1.BackColor));
                     points.Clear();
                     Invalidate();
                 }
                 else if (comboBox1.SelectedItem.ToString() == nameof(Rectangle))
                 {
-                    geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y,(int)numericUpDown1.Value, panel1.BackColor));
+                    geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y, (int)numericUpDown1.Value, panel1.BackColor));
                     points.Clear();
                     Invalidate();
                 }
@@ -93,6 +93,18 @@ namespace CV4
                 panel1.BackColor = colorDialog1.Color;
 
             }
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+            foreach(var item in geometries)
+            {
+                var isNear = (e.X >= item.OX - 10 && e.X <= item.OX + 10 && e.Y >= item.OY - 10 && e.Y <= item.OY + 10);
+                item.Selected = isNear;
+            }
+            Invalidate();
+            
         }
     }
 }

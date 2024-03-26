@@ -24,6 +24,7 @@ namespace CV4.Models
         public int PenWidth { get; set; } = 1;
         public Color PenColor { get; set; } = Color.Black;
         public Color FillColor { get; set; }
+        public bool Selected { get; set; }
 
         protected Geometry(int ox, int oy)
         {
@@ -36,6 +37,11 @@ namespace CV4.Models
         internal virtual void Draw(Graphics graphics) //nebo abstract
         {
             DrawPoint(graphics);
+            if (Selected)
+            {
+                //něco udělej
+                DrawHover(graphics);
+            }
         }
         internal void DrawPoint(Graphics graphics)
         {
@@ -43,5 +49,7 @@ namespace CV4.Models
             graphics.DrawLine(pen, OX, OY - 5, OX, OY + 5);
             graphics.DrawLine(pen, OX - 5, OY, OX + 5, OY);
         }
+        internal protected abstract void DrawHover(Graphics graphics);
+      
     }
 }
