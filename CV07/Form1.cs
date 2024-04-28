@@ -43,7 +43,7 @@ namespace CV07
 
         private void Tank_OnTankStateChange(object sender, double stateLitres, double statePercent)
         {
-            this.Invoke(new Action(() =>  label1.Text = stateLitres.ToString(),))
+            this.Invoke(new Action(() => label1.Text = stateLitres.ToString()));
             
         }
         private void ChangePumpColors(ValveState valveState, Label label)
