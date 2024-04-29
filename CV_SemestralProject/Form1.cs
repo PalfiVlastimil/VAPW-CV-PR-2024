@@ -47,6 +47,7 @@ namespace CV_SemestralProject
         }
         private void LoadTimer()
         {
+            //why is it null
             timer1.Start();
             timer1.Enabled = true;
         }
