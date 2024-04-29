@@ -40,9 +40,11 @@
             // 
             groupBox1.Controls.Add(radioButton2);
             groupBox1.Controls.Add(radioButton1);
-            groupBox1.Location = new Point(12, 12);
+            groupBox1.Location = new Point(10, 9);
+            groupBox1.Margin = new Padding(3, 2, 3, 2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(250, 229);
+            groupBox1.Padding = new Padding(3, 2, 3, 2);
+            groupBox1.Size = new Size(219, 172);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Change binding type:";
@@ -50,9 +52,10 @@
             // radioButton2
             // 
             radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(16, 80);
+            radioButton2.Location = new Point(14, 60);
+            radioButton2.Margin = new Padding(3, 2, 3, 2);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(68, 24);
+            radioButton2.Size = new Size(55, 19);
             radioButton2.TabIndex = 1;
             radioButton2.TabStop = true;
             radioButton2.Text = "Timer";
@@ -61,9 +64,10 @@
             // radioButton1
             // 
             radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(16, 37);
+            radioButton1.Location = new Point(14, 28);
+            radioButton1.Margin = new Padding(3, 2, 3, 2);
             radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(72, 24);
+            radioButton1.Size = new Size(59, 19);
             radioButton1.TabIndex = 0;
             radioButton1.TabStop = true;
             radioButton1.Text = "Events";
@@ -72,9 +76,10 @@
             // button1
             // 
             button1.DialogResult = DialogResult.OK;
-            button1.Location = new Point(168, 257);
+            button1.Location = new Point(147, 193);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(94, 29);
+            button1.Size = new Size(82, 22);
             button1.TabIndex = 3;
             button1.Text = "Confirm";
             button1.UseVisualStyleBackColor = true;
@@ -82,21 +87,23 @@
             // button2
             // 
             button2.DialogResult = DialogResult.Cancel;
-            button2.Location = new Point(58, 257);
+            button2.Location = new Point(51, 193);
+            button2.Margin = new Padding(3, 2, 3, 2);
             button2.Name = "button2";
-            button2.Size = new Size(94, 29);
+            button2.Size = new Size(82, 22);
             button2.TabIndex = 4;
             button2.Text = "Cancel";
             button2.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(275, 312);
+            ClientSize = new Size(242, 234);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(groupBox1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormSettings";
             Text = "FormSettings";
             groupBox1.ResumeLayout(false);

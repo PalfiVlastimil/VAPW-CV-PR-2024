@@ -1,5 +1,10 @@
 using CV_SemestralProject.Models;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Forms.Application;
 using Semaphore = CV_SemestralProject.Models.Semaphore;
 
 namespace CV_SemestralProject
@@ -47,14 +52,30 @@ namespace CV_SemestralProject
         }
         private void LoadTimer()
         {
-            //why is it null
-            timer1.Start();
             timer1.Enabled = true;
+            
         }
         private void UnloadTimer()
         {
-            timer1.Stop();
-            timer1.Enabled = false;
+            if(timer1 != null)
+            {
+                timer1.Stop();
+                timer1.Enabled = false;
+            }
+        }
+        private void Washer_OnInOpeningStateChange(object sender, int openingShift)
+        {
+            this.Invoke(new Action(() =>
+            {
+                panel1.Location = new Point(InGateOrigPos + openingShift, panel1.Location.Y);
+            }));
+        }
+        private void Washer_OnInSemaphoreStateChange(object sender, Semaphore semaphore)
+        {
+            this.Invoke(new Action(() =>
+            {
+                label1.BackColor = semaphore == Semaphore.On ? Color.Green : Color.Red;
+            }));
         }
         private void Washer_OnOutOpeningStateChange(object sender, int openingShift)
         {
@@ -68,21 +89,6 @@ namespace CV_SemestralProject
             this.Invoke(new Action(() =>
             {
                 label2.BackColor = semaphore == Semaphore.On ? Color.Green : Color.Red;
-            }));
-        }
-
-        private void Washer_OnInOpeningStateChange(object sender, int openingShift)
-        {
-            this.Invoke(new Action(() =>
-            {
-                panel1.Location = new Point(InGateOrigPos + openingShift, panel1.Location.Y);
-            }));
-        }
-        private void Washer_OnInSemaphoreStateChange(object sender, Semaphore semaphore)
-        {
-            this.Invoke(new Action(() =>
-            {
-                label1.BackColor = semaphore == Semaphore.On ? Color.Green : Color.Red;
             }));
         }
 
@@ -137,10 +143,6 @@ namespace CV_SemestralProject
             button3.Visible = false;
             button1.Visible = true;
         }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             washer?.Dispose();
@@ -149,7 +151,14 @@ namespace CV_SemestralProject
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+                label3.Text = washer.Text;
+                panel3.Height = (int)(panel4.Height * (1 - washer.StateLitres / washer.CapacityLitres));
 
+                panel1.Location = new Point(InGateOrigPos + washer.InGateState.ProgressOpeningShift, panel1.Location.Y);
+                panel2.Location = new Point(OutGateOrigPos + washer.OutGateState.ProgressOpeningShift, panel2.Location.Y);
+
+                label1.BackColor = washer.InGateState.Semaphore == Semaphore.On ? Color.Green : Color.Red;
+                label2.BackColor = washer.OutGateState.Semaphore == Semaphore.On ? Color.Green : Color.Red;
         }
 
         private void button4_Click(object sender, EventArgs e)
