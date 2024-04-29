@@ -5,6 +5,6 @@
         AwaitingResponse,
         VehicleEnter,
         Washing,
-        VehicleExit
+        VehicleExit,
     }
 }

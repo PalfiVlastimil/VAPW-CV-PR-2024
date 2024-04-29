@@ -1,4 +1,5 @@
 using CV_SemestralProject.Models;
+using System.Diagnostics;
 using Semaphore = CV_SemestralProject.Models.Semaphore;
 
 namespace CV_SemestralProject
@@ -16,9 +17,15 @@ namespace CV_SemestralProject
         private void Form1_Load(object sender, EventArgs e)
         {
             washer = new CarWasher(10000);
-            //original positions of gates
             InGateOrigPos = panel1.Location.X;
             OutGateOrigPos = panel2.Location.X;
+            LoadEvents();
+
+
+        }
+        private void LoadEvents()
+        {
+            //Washer Events
             washer.OnWasherStateChange += Washer_OnWasherStateChange;
             washer.OnTextStateChange += Washer_OnTextStateChange;
             //Gate Events
@@ -27,7 +34,27 @@ namespace CV_SemestralProject
             washer.OutGateState.OnOpeningStateChange += Washer_OnOutOpeningStateChange;
             washer.OutGateState.OnSemaphoreStateChange += Washer_OnOutSemaphoreStateChange;
         }
-
+        private void UnloadEvents()
+        {
+            //Washer Events
+            washer.OnWasherStateChange -= Washer_OnWasherStateChange;
+            washer.OnTextStateChange -= Washer_OnTextStateChange;
+            //Gate Events
+            washer.InGateState.OnOpeningStateChange -= Washer_OnInOpeningStateChange;
+            washer.InGateState.OnSemaphoreStateChange -= Washer_OnInSemaphoreStateChange;
+            washer.OutGateState.OnOpeningStateChange -= Washer_OnOutOpeningStateChange;
+            washer.OutGateState.OnSemaphoreStateChange -= Washer_OnOutSemaphoreStateChange;
+        }
+        private void LoadTimer()
+        {
+            timer1.Start();
+            timer1.Enabled = true;
+        }
+        private void UnloadTimer()
+        {
+            timer1.Stop();
+            timer1.Enabled = false;
+        }
         private void Washer_OnOutOpeningStateChange(object sender, int openingShift)
         {
             this.Invoke(new Action(() =>
@@ -60,10 +87,21 @@ namespace CV_SemestralProject
 
         private void Washer_OnWasherStateChange(object sender, double stateLitres, double washPercent)
         {
-            this.Invoke(new Action(() =>
+            //Tohle nevím, jak vyøešit
+            try
             {
-                panel3.Height = (int)(panel4.Height * (100 - washPercent) / 100);
-            }));
+                this.Invoke(new Action(() =>
+                {
+                    panel3.Height = (int)(panel4.Height * (100 - washPercent) / 100);
+                }));
+            }
+            catch (ThreadInterruptedException e)
+            {
+                Debug.WriteLine("Thread Interrupted in Invoke!");
+                Application.Exit();
+                return;
+            }
+
         }
 
         private void Washer_OnTextStateChange(object sender, string text)
@@ -97,6 +135,40 @@ namespace CV_SemestralProject
             washer.States = MachineStates.VehicleExit;
             button3.Visible = false;
             button1.Visible = true;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            washer?.Dispose();
+            Application.Exit();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var form = new FormSettings();
+            var result = form.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                // zpracovat hodnotu formulari
+                if (form.IsEvent)
+                {
+                    UnloadTimer();
+                    LoadEvents();
+                }
+                else
+                {
+                    UnloadEvents();
+                    LoadTimer();
+                }
+            }
         }
     }
 }

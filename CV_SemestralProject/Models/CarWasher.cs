@@ -13,8 +13,6 @@ namespace CV_SemestralProject.Models
     {
         public delegate void ChangedWasherStateHandler(object sender, double stateLitres, double washPercent);
         public delegate void ChangedTextStateHandler(object sender, string text);
-        private Gate _inGateState;
-        private Gate _outGateState;
         private string _text;
         private double _stateLitres;
         private Thread _thread = new Thread(StartThread);
@@ -57,6 +55,7 @@ namespace CV_SemestralProject.Models
                 if (flag)
                 {
                     this.OnWasherStateChange?.Invoke(this, _stateLitres, 100.0 * _stateLitres / (double)CapacityLitres);
+                    
                 }
             }
         }
@@ -111,7 +110,9 @@ namespace CV_SemestralProject.Models
                             }
                             catch (ThreadInterruptedException)
                             {
-                                carWasher.Running = false;
+                                Debug.WriteLine("Thread interrupted");
+                                carWasher.IsWashing = false;
+                                return;
                             }
                         }
                         carWasher.Text = "Done!";
@@ -133,6 +134,7 @@ namespace CV_SemestralProject.Models
                 catch (ThreadInterruptedException)
                 {
                     carWasher.Running = false;
+                    return;
                 }
             }
         }
@@ -160,8 +162,13 @@ namespace CV_SemestralProject.Models
                 _thread.Interrupt();
                 _thread.Join();
             }
-            catch (Exception)
+            catch (ThreadInterruptedException e)
             {
+                return;
+            }
+            catch(Exception e)
+            {
+               Debug.WriteLine(e.Message);
             }
         }
     }
